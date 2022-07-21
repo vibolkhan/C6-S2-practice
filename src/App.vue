@@ -1,22 +1,43 @@
 <template>
   <friend-nav />
   <div class="container">
-    <friend-form />
-    <friend-card v-for:="value in users" :key="value.name" :user="value" /> 
+    <friend-form @users = "addUser" />
+    <friend-card @delete-card = "delete_card" v-for:="value in users" :key="value.name" :user = "value"/> 
   </div>
 </template>
 
 <script>
+import FriendForm from './components/friend-form.vue';
+import FriendNav from './components/friend-nav.vue';
+import FriendCard from './components/friend-card.vue';
 export default {
+  components: { FriendNav, FriendForm, FriendCard },
   data() {
     return {
-      users: [
-        {name: "Ronan OGOR", content: "THE BEST TEAM"},
-        {name: "Ronan OGOR", content: "THE BEST TEAM"},
-      ]
+      id: 0,
+      users: [],
       
     }
   },
+  methods: { 
+    addUser(firstname, lastname, comment, skills) {
+      this.id ++;
+       this.users.push({
+        id: this.id,
+        firstname: firstname,
+        lastname: lastname,
+        comment: comment,
+        skills: skills,
+      });
+    },
+    delete_card(id) {
+      for (let i=0; i<this.users.length; i++) {
+        if (this.users[i].id == id) {
+          this.users.splice(i,1);
+        }
+      }
+    }
+  }
 }
 </script>
 
